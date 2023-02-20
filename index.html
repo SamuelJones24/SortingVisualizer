@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Visualizer</title>
+    <link rel="stylesheet" href="SortAlg.css">
+    <script src="https://kit.fontawesome.com/4ff0de587d.js" crossorigin="anonymous" defer></script>
+    <script src="./SortAlg.js" defer></script>
+</head>
+<body>
+    
+    <div class="header">
+        <a href="https://github.com/SamuelJones24"><button id="github"><i class="fa-brands fa-github"></i></button></a>
+        <button id="random">Randomize</button>
+        <button id="bubble" >Bubble Sort</button>
+        <button id="insertion">Insertion Sort</button>
+        <button id="quick">Quick Sort</button>
+        <button id="bogo">Bogo Sort</button>
+    </div>
+    
+    <div class="main">
+        <div class="box">
+            
+            <h1 class="sliderVal"></h1>
+            <h1 class="timerVal"></h1>
+        </div>
+
+        <div id="arrayCont"></div>
+
+        <div id="sliderCont">
+            <form action="">
+                <input type="range" min="2" max="200" value="100" class="slider" id="myRange">
+            </form>
+        </div>
+</div>
+</body>
+</html>
