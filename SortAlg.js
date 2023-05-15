@@ -6,7 +6,7 @@ function sleep(ms) {
 var slider = document.getElementById("myRange");
 let array = [];
 let parent = document.getElementById("arrayCont")
-
+let sliderParent = document.getElementById("sliderCont")
 document.querySelector('.sliderVal').innerHTML = slider.value;
 
 let time = Math.ceil(500/slider.value)
@@ -16,18 +16,24 @@ let timeoutId = null;
 let ms = 0;
 let sec = 0;
 let min = 0;
+let isSorting = false;
+
+let quickSortRunning = false;
+
+let cancel = false;
 
 
 reset();
 
+
 for (let i = 0; i < slider.value; i++ ) {
-    array.push(Math.floor((Math.random() * 400) + 5));
+    array.push(Math.floor((Math.random() * 400) + 4));
 }
 
 for (let i = 0; i < slider.value; i++){
     let bar = document.createElement("div");
     bar.className = "bars";
-    bar.style.height = Math.floor((array[i] * 100 / 400)) + '%';
+    bar.style.height = (array[i] * 100 / 400) + '%';
     parent.appendChild(bar);
 }
 
@@ -52,6 +58,11 @@ document.getElementById('quick').addEventListener("click", () => {
 document.getElementById('bogo').addEventListener("click", () => {
     bogoSort(array)
 });
+document.getElementById("stop").addEventListener("click", () => {
+    cancelSort();
+});
+
+
 
 
 function randomize(){
@@ -65,14 +76,14 @@ function randomize(){
 
 
     for (let i = 0; i < slider.value; i++ ) {
-        array.push(Math.floor((Math.random() * 400) + 5));
+        array.push(Math.floor((Math.random() * 400) + 4));
     }
 
     for (let i = 0; i < slider.value; i++){
         let bar = document.createElement("div");
         bar.className = "bars";
    
-        bar.style.height = Math.floor((array[i] * 100 / 400)) + '%';
+        bar.style.height = (array[i] * 100 / 400) + '%';
         parent.appendChild(bar);
     }
 
@@ -84,6 +95,11 @@ function randomize(){
 
 
 async function bubbleSort(array){
+    console.log(cancel)
+    if (isSorting){
+        return;
+    }
+    isSorting = true;
     reset();
     timer();
     time = Math.ceil(500/slider.value)
@@ -94,6 +110,13 @@ async function bubbleSort(array){
         for (let j = 0; j < slider.value - i - 1; j++) {
             highlight([j, j+1], 'red')
             await sleep(time);
+            if (cancel && isSorting){
+                // highlight([j, j+1], 'rgb(77, 102, 100)')
+                cancel = false;
+                isSorting = false;
+                pause();
+                return;
+            }
             
             if (array[j] > array[j + 1]) { 
                 swap(array, j, j+1)
@@ -107,12 +130,19 @@ async function bubbleSort(array){
         }
 
     }
+    isSorting = false;
     pause();
-    console.log(time)
+
 
 }
 
+
+
 async function insertionSort(array) {
+        if (isSorting){
+            return;
+        }
+        isSorting = true;
         reset();
         timer();
         time = Math.ceil(500/slider.value)
@@ -125,17 +155,32 @@ async function insertionSort(array) {
                 highlight([j, j+1], 'red')
                 await sleep(time)
                 array[j+1] = array[j];
+                updateDisplay(array)
+                if (cancel && isSorting){
+                    // highlight([j, j+1], 'rgb(77, 102, 100)');
+                    cancel = false;
+                    isSorting = false;
+                    pause();
+                    return;
+                }
                 highlight([j, j+1], 'rgb(77, 102, 100')
                 j--;
-                updateDisplay(array)
+
+        
 
             }
             array[j+1] = current;
         }
+        updateDisplay(array)
+        isSorting = false;
         pause();
 }
 
 async function bogoSort(array){
+    if (isSorting){
+        return;
+    }
+    isSorting = true;
     reset();
     timer();
     let i = 0
@@ -144,6 +189,13 @@ async function bogoSort(array){
     while (!isSorted(array)){
         i = Math.floor(Math.random() * slider.value)
         j = Math.floor(Math.random() * slider.value)
+        if (cancel && isSorting){
+            // highlight([i, j], 'rgb(77, 102, 100)')
+            cancel = false;
+            isSorting = false;
+            pause();
+            return;
+        }
 
         highlight([i, j], 'red')
         await sleep(time)
@@ -153,6 +205,7 @@ async function bogoSort(array){
 
         
     }
+    isSorting = false;
     pause();
 }
 
@@ -193,9 +246,10 @@ function updateDisplay(array){
 
 
 function isSorted(array){
-    for(var i = 1; i < slider.value; i++)
+    for(var i = 1; i < slider.value; i++) {
         if (array[i] < array[i-1])
             return false;
+    }
     return true;
 }
 
@@ -249,17 +303,48 @@ function swap(array, a, b){
 }
 
 function partition(array, left, right) {
+
     var pivot = array[Math.floor((right + left) / 2)], //middle element
         i = left, //left pointer
         j = right; //right pointer
     while (i <= j) {
+        if (cancel){
+            // highlight([i, j], 'rgb(77, 102, 100)')
+            cancel = false;
+            isSorting = false;
+            pause();
+            return;
+        }
+
         while (array[i] < pivot) {
+            if (cancel){
+                // highlight([i, j], 'rgb(77, 102, 100)')
+                cancel = false;
+                isSorting = false;
+                pause();
+                return;
+            }
             i++;
+
         }
         while (array[j] > pivot) {
+            if (cancel){
+                // highlight([i, j], 'rgb(77, 102, 100)')
+                cancel = false;
+                isSorting = false;
+                pause();
+                return;
+            }
             j--;
         }
         if (i <= j) {
+            if (cancel){
+                // highlight([i, j], 'rgb(77, 102, 100)')
+                cancel = false;
+                isSorting = false;
+                pause();
+                return;
+            }
             swap(array, i, j); //swap two elements
             i++;
             j--;
@@ -273,34 +358,47 @@ async function quickSort(array, left, right) {
     timer();
 
     var index;
+
     if (array.length > 1) {
+
+
         index = partition(array, left, right); //index returned from partition
-        await sleep(50)
+        await sleep(time)
         updateDisplay(array)
 
         if (left < index - 1) { //more elements on the left side of the pivot
             highlight([index], 'red')
-            await sleep(50)
-            quickSort(array, left, index - 1);
+
+            await sleep(time)
+            await quickSort(array, left, index - 1);
 
 
         }
         if (index < right) { //more elements on the right side of the pivot
             highlight([index], 'red')
 
-            await sleep(50)
-            quickSort(array, index, right);
+            await sleep(time)
+            await quickSort(array, index, right);
 
 
         }
     }
+    highlight([index], 'red')
 
+    updateDisplay(array)
+
+    await sleep(time)
     highlight([index], 'rgb(77, 102, 100)')
     pause();
+
 
     return array;
     
 }
 
-
-
+function cancelSort() {
+    // if (isSorting){
+    //     cancel = true;
+    // }
+    cancel = true
+}

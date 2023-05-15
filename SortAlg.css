@@ -54,7 +54,7 @@ button:hover {
 
 #arrayCont {
     display: flex;
-    height: 75vh;
+    height: 70vh;
     width: 90vw;
     transform: rotateX(180deg);
 }
@@ -66,13 +66,23 @@ button:hover {
     background-color: rgb(77, 102, 100);
 }
 
+.bars:hover{
+  background-color: goldenrod;
+}
+
 #sliderCont{
-    width: 50%;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
 }
 
 .slider {
     -webkit-appearance: none;
-    width: 100%;
+    width: 25vw;
     height: 15px;
     border-radius: 5px;  
     background: #222;
@@ -107,6 +117,7 @@ button:hover {
   }
 
   .sliderVal {
+    position: relative;
     font-size: 4vw;
     font-weight: 500;
     width: 100px;
@@ -122,6 +133,13 @@ button:hover {
     color: rgb(77, 102, 100);
     text-align: center;
   }
+
+  #stop {
+    width: 15%;
+    font-size: auto;
+  }
+
+
 
 @media screen and (max-width: 600px){
 
