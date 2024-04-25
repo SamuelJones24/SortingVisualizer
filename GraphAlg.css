@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+#tree-container {
+    position: relative;
+    margin-top: 50px;
+    justify-content: center;
+    height: 65vh;
+}
+
+.sliderCont {
+    display: flex;
+    justify-content: space-evenly
+}
+
+
+.node {
+    background-color: rgb(77, 102, 100);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    position: absolute;
+}
+
+
+.node:hover {
+    background-color: goldenrod;
+    color: black;
+}
+#generateTree, #stop { 
+    width: 15%;
+}

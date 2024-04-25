@@ -139,6 +139,20 @@ button:hover {
     font-size: auto;
   }
 
+  #StepOn {
+    width: 15%;
+    font-size: auto;
+  }
+
+  #Step{
+    width: 15%;
+    font-size: auto;
+    display: none;
+  }
+
+  #graphLink {
+    width: 15%;
+  }
 
 
 @media screen and (max-width: 600px){
